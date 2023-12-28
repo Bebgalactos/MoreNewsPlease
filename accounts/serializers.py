@@ -50,10 +50,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
-class UserSerialize(serializers.ModelSerializer): 
-    class Meta: 
+
+class UserSerialize(serializers.ModelSerializer):
+    class Meta:
         model = UserCustomised
-        fields = ['id','user_name','first_name','last_name','email','phone_number','adress']
+        fields = ['id', 'user_name', 'first_name',
+                  'last_name', 'email', 'phone_number', 'adress']
+
 
 class EmailConfirmationSerializer(serializers.ModelSerializer):
     class Meta:
