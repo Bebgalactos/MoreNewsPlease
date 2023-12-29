@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'djoser',
     'drf_spectacular',
     'accounts',
     'Articles'
@@ -85,7 +86,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'zomxtn12345*',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -149,7 +150,20 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_TYPES': ('Jwt',),
+}
+
+DJOSER = {
+    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': '#/activate/{uid}/{token}',
+    'SEND_ACTIVATION_EMAIL': True,
+    'LOGOUT_ON_PASSWORD_CHANGE' : True,
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND' : True,
+    'LOGIN_FIELD' : "email",
+    'SERIALIZERS': {
+        'user_create': 'accounts.serializers.RegisterSerializer',
+    },
 }
 
 EMAIL_HOST="smtp.gmail.com"

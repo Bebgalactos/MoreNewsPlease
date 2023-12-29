@@ -14,10 +14,8 @@ class UserCustomised(AbstractBaseUser, PermissionsMixin):
     phone_number = models.CharField(
         "Téléphone", max_length=50, unique=True, blank=False)
     adress = models.CharField("Adresse", max_length=120, blank=False)
-    is_active = models.BooleanField("Compte actif ? ", default=True)
+    is_active = models.BooleanField("Compte actif ? ", default=False)
     is_staff = models.BooleanField("Staff ? ", default=False)
-    is_email_confirmed = models.BooleanField(
-        "Email Confirmé ? ", default=False)
     objects = UserManagerCustomised()
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["user_name", "first_name",

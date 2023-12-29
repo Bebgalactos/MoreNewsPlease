@@ -1,11 +1,17 @@
 from django.urls import path
-from .views import RegisterView, LoginView, ConfirmEmail, ProfileView
+from djoser.views import UserViewSet
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 
 app_name = 'accounts'
 
 urlpatterns = [
-    path('register', view=RegisterView.as_view(),name="Register"),
-    path('login', view=LoginView.as_view(),name="Login"),
-    path('verify-email/', view=ConfirmEmail.as_view(),name="verify email"),
-    path('profile/', view=ProfileView.as_view(),name="get profile")
+    path('register/', UserViewSet.as_view({'post': 'create'}), name="register"),
+    path("login/", TokenObtainPairView.as_view(), name="login"),
+    path("resend-activation/", UserViewSet.as_view({"post": "resend_activation"}), name="resend_activation"),
+    path("activation/", UserViewSet.as_view({"post": "activation"}), name="activate"),
+    path("reset-password/", UserViewSet.as_view({"post": "reset_password"}), name="reset_password"),
+    path("reset-password-confirm/", UserViewSet.as_view({"post": "reset_password_confirm"}), name="reset_password_confirm"),
+    path("change-email/", UserViewSet.as_view({"post": "reset_username"}), name="change_email"),
+    path("change-email-confirm/", UserViewSet.as_view({"post": "reset_username_confirm"}), name="change_email_confirm")
 ]
