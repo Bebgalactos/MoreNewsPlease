@@ -12,6 +12,8 @@ urlpatterns = [
     path("activation/", UserViewSet.as_view({"post": "activation"}), name="activate"),
     path("reset-password/", UserViewSet.as_view({"post": "reset_password"}), name="reset_password"),
     path("reset-password-confirm/", UserViewSet.as_view({"post": "reset_password_confirm"}), name="reset_password_confirm"),
-    path("change-email/", UserViewSet.as_view({"post": "reset_username"}), name="change_email"),
-    path("change-email-confirm/", UserViewSet.as_view({"post": "reset_username_confirm"}), name="change_email_confirm")
+    path("change-email/", UserViewSet.as_view({"post": "set_username"}), name="change_email"),
+    path("profile/", UserViewSet.as_view({"get": "me"}), name="profile"),
+    path("edit-profile/", UserViewSet.as_view({"patch": "me"}), name="profile_edit"),
+    path("delete-profile/", UserViewSet.as_view({"delete": "me"}), name="profile_delete"),
 ]

@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    'djoser',
     'drf_spectacular',
+    'djoser',
     'accounts',
     'Articles'
 ]
@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'zomxtn12345*',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
@@ -138,8 +138,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ], 
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"
 }
 
 SIMPLE_JWT = {
@@ -150,7 +150,7 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
     'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('Jwt',),
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 DJOSER = {
@@ -158,16 +158,26 @@ DJOSER = {
     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': '#/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
-    'LOGOUT_ON_PASSWORD_CHANGE' : True,
-    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND' : True,
-    'LOGIN_FIELD' : "email",
+    'LOGOUT_ON_PASSWORD_CHANGE': True,
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
     'SERIALIZERS': {
         'user_create': 'accounts.serializers.RegisterSerializer',
+        'username_reset_confirm': 'djoser.serializers.UsernameResetConfirmSerializer',
     },
 }
 
-EMAIL_HOST="smtp.gmail.com"
-EMAIL_PORT= "587"
-EMAIL_HOST_USER="rayene.zamouri@gmail.com"
-EMAIL_HOST_PASSWORD="vxbb yfmz ciht ueld"
-EMAIL_USE_TLS=True
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'Jwt',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = "587"
+EMAIL_HOST_USER = "rayene.zamouri@gmail.com"
+EMAIL_HOST_PASSWORD = "vxbb yfmz ciht ueld"
+EMAIL_USE_TLS = True
