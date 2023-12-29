@@ -40,6 +40,3 @@ class UserManagerCustomised(BaseUserManager):
         return self.create_user(email, password, user_name, first_name, last_name, phone_number, adress, **extra_fields)
 
 
-class EmailConfirmationManager(models.Manager):
-    def create_email_confirmation(self, user):
-        return self.create(user=user)

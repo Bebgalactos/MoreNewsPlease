@@ -1,14 +1,11 @@
-from django.urls import path
-from .views import ArticleView, ChannelView
-
+from django.urls import path , include
+from .views import NewspaperViewset , ArticleViewset
+from rest_framework.routers import DefaultRouter
 app_name = 'Articles'
+router = DefaultRouter()
+router.register(r'newspapers', NewspaperViewset, "Newspapers")
+router.register(r'articles',ArticleViewset, "Articles")
 
 urlpatterns = [
-    path('articles/', view=ArticleView.as_view(), name="Articles"),
-    path('articles/<uuid:id>',
-         view=ArticleView.as_view(), name="ArticleDetail"),
-    path('channels/', view=ChannelView.as_view(), name="Channels"),
-    path('channels/<uuid:id>',
-         view=ChannelView.as_view(), name="Channels")
-
+    path('', include(router.urls)),
 ]

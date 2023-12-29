@@ -3,7 +3,6 @@ from .models import UserCustomised
 from rest_framework.validators import UniqueValidator
 from django.core.validators import RegexValidator
 from django.contrib.auth.password_validation import validate_password
-from .models import EmailConfirmationModel
 
 # Serializer to Register User
 
@@ -58,7 +57,3 @@ class UserSerialize(serializers.ModelSerializer):
                   'last_name', 'email', 'phone_number', 'adress']
 
 
-class EmailConfirmationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = EmailConfirmationModel
-        fields = ('email_id', 'user', 'expiration_date')

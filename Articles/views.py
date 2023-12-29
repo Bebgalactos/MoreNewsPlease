@@ -1,101 +1,36 @@
 from django.shortcuts import render
-from rest_framework.views import APIView
+from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
-from .serializers import ArticleSerializer, ChannelSerializer, ArticleReadSerializer
-from .models import Article, Channel
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.decorators import action
+from .models import Article, Newspaper
+from .serializers import ArticleSerializer, NewspaperSerializer
+from django.shortcuts import get_object_or_404
+
 # Create your views here.
 
 
-class ArticleView(APIView):
-    serializer_class = ArticleReadSerializer
-    permission_classes = [IsAuthenticated]
+class ArticleViewset(viewsets.ModelViewSet):
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    http_method_names = ['get', 'head', 'options', 'patch', 'delete']
 
-    def get(self, request, id=None):
-        if id is None:
-            articles = Article.objects.all()
-            serialize = self.serializer_class(articles, many=True)
-            return Response(serialize.data, status=200)
+class NewspaperViewset(viewsets.ModelViewSet):
+    queryset = Newspaper.objects.all()
+    serializer_class = NewspaperSerializer
+    http_method_names = ['get', 'post', 'head', 'options', 'patch', 'delete']
+
+    def get_serializer_class(self):
+        if self.action == "create_article":
+            return ArticleSerializer
+        return self.serializer_class
+
+    @action(methods=['post'], detail=True, url_path="create-article")
+    def create_article(self, request, pk):
+        print("tesr")
+        newspaper = get_object_or_404(Newspaper, pk = pk)
+        article_serializer = self.get_serializer_class()(data=request.data)
+        if article_serializer.is_valid():
+            article_serializer.save(newspaper=newspaper)
+            return Response(article_serializer.data, status=status.HTTP_201_CREATED)
         else:
-            try:
-                article = Article.objects.get(pk=id)
-            except:
-                return Response("Article n'existe pas", status=404)
-            serialize = self.serializer_class(article)
-            return Response(serialize.data, status=200)
-
-    def post(self, request):
-
-        try:
-            channel = Channel.objects.get(pk=request.data["channel"])
-        except:
-            return Response("Channel not foud", status=400)
-        serializer = ArticleSerializer(
-            data={**request.data, channel: channel.pk})
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response("Article Successfully Created!", status=201)
-        return Response(serializer.errors, status=404)
-
-    def patch(self, request, id):
-        try:
-            article = Article.objects.get(pk=id)
-        except Article.DoesNotExist:
-            return Response("Article n'existe pas", status=404)
-        serializer = ArticleSerializer(article, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=200)
-        return Response(serializer.errors, status=400)
-
-    def delete(self, request, id):
-        try:
-            article = Article.objects.get(pk=id)
-        except Article.DoesNotExist:
-            return Response("Article n'existe pas", status=404)
-        article.delete()
-        return Response("Article supprimé", status=204)
-
-
-class ChannelView(APIView):
-    serializer_class = ChannelSerializer
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, id=None):
-        if id is None:
-            channels = Channel.objects.all()
-            serialize = self.serializer_class(channels, many=True)
-            return Response(serialize.data, status=200)
-        else:
-            try:
-                channel = Channel.objects.get(pk=id)
-            except:
-                return Response("Channel n'existe pas", status=404)
-            serialize = self.serializer_class(channel)
-            return Response(serialize.data, status=200)
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
-
-    def patch(self, request, id):
-        try:
-            channel = Channel.objects.get(pk=id)
-        except Channel.DoesNotExist:
-            return Response("Le channel n'a pas été trouvé.", status=404)
-        serializer = self.serializer_class(channel, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=200)
-        return Response(serializer.errors, status=400)
-
-    def delete(self, request, id):
-        try:
-            channel = Channel.objects.get(pk=id)
-        except Channel.DoesNotExist:
-            return Response("Le channel n'a pas été trouvé.", status=404)
-        channel.delete()
-        return Response("Le channel a bien été supprimé.", status=200)
+            return Response(article_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
