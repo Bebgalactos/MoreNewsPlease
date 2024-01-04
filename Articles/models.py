@@ -23,4 +23,4 @@ class Article(models.Model):
     newspaper = models.ForeignKey(Newspaper,on_delete = models.CASCADE)
 
     def __str__(self) -> str:
-        return self.title
+        return str(self.article_id)

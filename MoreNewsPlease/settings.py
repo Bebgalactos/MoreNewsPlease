@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'djoser',
     'accounts',
-    'Articles'
+    'Articles', 
+    'Interactions'
 ]
 
 MIDDLEWARE = [
