@@ -29,9 +29,9 @@ class Interaction(models.Model):
     interaction_type = models.CharField(
         choices=INTERACTION_TYPE_CHOICES, blank=False)
     user = models.ForeignKey(
-        get_user_model(), on_delete=models.CASCADE, related_name='user')
+        get_user_model(), on_delete=models.CASCADE, related_name='user_interactions')
     article = models.ForeignKey(
-        Article, on_delete=models.CASCADE, related_name="article")
+        Article, on_delete=models.CASCADE, related_name="article_interactions")
     timestamp = models.DateTimeField(auto_now=True)
     rating = models.PositiveSmallIntegerField(null=True, blank=True)
     opinion = models.CharField(
