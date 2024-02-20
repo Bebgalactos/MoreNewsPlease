@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import UserManagerCustomised
 from uuid import uuid4
+from .utils import generate_random_password
+
 
 class UserCustomised(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField("Adresse Mail", blank=False, unique=True)
@@ -18,10 +20,12 @@ class UserCustomised(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["user_name", "first_name",
                        "last_name", "phone_number", "adress"]
-    
+    is_first_login = models.BooleanField("Premier Login?", default=True)
+    temporary_password = models.CharField(
+        "Mot de passe temporaire", max_length=64, default=generate_random_password())
+
     def __str__(self):
         return self.email
-    
+
     class Meta:
         verbose_name_plural = 'Utilisateurs'
-    

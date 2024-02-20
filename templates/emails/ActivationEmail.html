@@ -1,0 +1,26 @@
+{% block subject %}Activation du compte{% endblock %}
+
+{% block html_body %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation du compte</title>
+</head>
+
+<body>
+    <h2>Activation du compte</h2>
+    <p>Bonjour {{ pseudo }},</p>
+    <p>Pour activer votre compte, veuillez cliquer sur le lien
+        ci-dessous :</p>
+    <p><a href="{{ url }}">{{ url }}</a></p>
+    <p>Votre mot de passe temporaire est : {{ temporary_password }}</p>
+    <p>Si vous n'avez pas demandé cette activation, vous pouvez ignorer cet e-mail en toute sécurité.</p>
+    <p>Cordialement,<br> L'équipe MoreNewsPlease</p>
+</body>
+
+</html>
+{% endblock %}

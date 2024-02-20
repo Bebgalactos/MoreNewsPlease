@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'djoser',
     'accounts',
-    'Articles', 
+    'Articles',
     'Interactions'
 ]
 
@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'zomxtn12345*',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -163,12 +163,17 @@ DJOSER = {
     'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
     'SERIALIZERS': {
         'user_create': 'accounts.serializers.RegisterSerializer',
-        'username_reset_confirm': 'djoser.serializers.UsernameResetConfirmSerializer',
+        'user': 'accounts.serializers.UserSerializer',
+        'activation': 'accounts.serializers.AccountActivationSerializer',
+
     },
+    'EMAIL': {
+        'activation': 'accounts.emails.ActivationEmail'
+    }
 }
 
 SWAGGER_SETTINGS = {
-   'SECURITY_DEFINITIONS': {
+    'SECURITY_DEFINITIONS': {
         'Bearer': {
             'type': 'Jwt',
             'name': 'Authorization',
