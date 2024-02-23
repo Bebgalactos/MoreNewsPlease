@@ -14,15 +14,16 @@ services:
       - my_bridge_network
 
  db:
-    image: postgres:13
+    image: mysql:8.3
+    restart: always
     volumes:
-      - ./data/db:/var/lib/postgresql/data
+      - ./data/db:/var/lib/mysql
     ports:
-      - "5432:5432"
+      - "3306:3306"
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=zomxtn12345*
+      - MYSQL_DATABASE=rayene
+      - MYSQL_ROOT_PASSWORD=test_test_test
+      - MYSQL_PASS=zomxtn12345*
     networks:
       - my_bridge_network
 

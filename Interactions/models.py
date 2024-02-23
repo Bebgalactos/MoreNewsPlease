@@ -27,7 +27,7 @@ SHARE_CHOICES = {
 
 class Interaction(models.Model):
     interaction_type = models.CharField(
-        choices=INTERACTION_TYPE_CHOICES, blank=False)
+        choices=INTERACTION_TYPE_CHOICES, max_length=20, blank=False)
     user = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name='user_interactions')
     article = models.ForeignKey(
