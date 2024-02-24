@@ -3,8 +3,8 @@ from .models import Interaction, INTERACTION_TYPE_CHOICES
 from django.core.validators import MinValueValidator , MaxValueValidator
 
 class InteractionSerializer(serializers.ModelSerializer):
-    user = serializers.CharField(read_only = True)
-    article = serializers.UUIDField(read_only = True)
+    user = serializers.CharField(read_only=True)
+    article = serializers.UUIDField(read_only=True)
     class Meta:
         model = Interaction
         fields = ('id', 'user', 'article', 'interaction_type', 'timestamp')

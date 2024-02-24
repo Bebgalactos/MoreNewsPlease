@@ -11,5 +11,5 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ['article_id', 'title', 'descritpion', 'publication_date', 'image_url', 'tags', 'author', 'content', 'newspaper','article_interactions']
+        fields = ['article_id', 'title', 'descritpion', 'publication_date', 'image_url', 'author', 'content', 'newspaper','article_interactions']
         depth = 1

@@ -21,15 +21,14 @@ class UserManagerCustomised(BaseUserManager):
             raise ValueError("Adresse obligatoire")
         email = self.normalize_email(email)
         temporary_password = generate_random_password()
-        print(temporary_password)
         user = self.model(email=email, user_name=user_name,
-                          first_name=first_name, last_name=last_name, phone_number=phone_number, adress=adress, temporary_password=temporary_password ** extra_fields)
+                          first_name=first_name, last_name=last_name, phone_number=phone_number, adress=adress, temporary_password=temporary_password, ** extra_fields)
         user.set_password(temporary_password)
         user.save()
         return user
 
      # create super user
-    def create_superuser(self, email, password, user_name, first_name, last_name, phone_number, adress, **extra_fields):
+    def create_superuser(self, email, user_name, first_name, last_name, phone_number, adress, **extra_fields):
         extra_fields.setdefault("is_active", True)
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -40,4 +39,4 @@ class UserManagerCustomised(BaseUserManager):
             raise ValueError(
                 'Superuser must be assigned to is_superuser=True.')
 
-        return self.create_user(email, password, user_name, first_name, last_name, phone_number, adress, **extra_fields)
+        return self.create_user(email, user_name, first_name, last_name, phone_number, adress, **extra_fields)

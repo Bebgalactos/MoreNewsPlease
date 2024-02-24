@@ -17,13 +17,20 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from accounts import urls as accounts_urls
-from Articles import urls as articles_urls
-from drf_spectacular.views import SpectacularSwaggerView , SpectacularAPIView
-
+from Articles.views import NewspaperViewset, ArticleViewset
+from Interactions.views import InteractionsViewset
+from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
+from rest_framework_nested import routers
+router = routers.DefaultRouter()
+router.register(r'articles', ArticleViewset, basename="article")
+router.register(r'newspapers', NewspaperViewset, basename='newspaper')
+interactions_routers = routers.NestedDefaultRouter(router, r'articles', lookup='article')
+interactions_routers.register(r'interactions',InteractionsViewset,basename= 'interaction')
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('auth/', include((accounts_urls, 'accounts'))),  
-    path('api/', include(articles_urls)),
+    path('auth/', include((accounts_urls, 'accounts'))),
+    path('api/', include(router.urls)),
+    path('api/', include(interactions_routers.urls)),
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "docs/",
