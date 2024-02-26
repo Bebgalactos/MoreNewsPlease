@@ -7,12 +7,15 @@ from Interactions.models import Interaction
 from .serializers import ArticleSerializer, NewspaperSerializer
 from django.shortcuts import get_object_or_404
 from django.db.models import Prefetch
-
+from django_filters import rest_framework as filters
+from .filters import ArticleFilters
 class ArticleViewset(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     http_method_names = ['get', 'head', 'options', 'patch', 'delete']
     permission_classes = [IsAuthenticated]
+    filter_backends  = (filters.DjangoFilterBackend,)
+    filterset_class = ArticleFilters
 
     def get_queryset(self):
         user = self.request.user
