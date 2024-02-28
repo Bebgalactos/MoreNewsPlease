@@ -76,3 +76,9 @@ class AccountActivationSerializer(ActivationSerializer):
         user_object.temporary_password = ""
         user_object.save()
         return attrs
+
+class TokenSerializer(serializers.Serializer):
+    access = serializers.CharField()
+
+    def validate(self, attrs):
+        return attrs
