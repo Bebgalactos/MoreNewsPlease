@@ -1,6 +1,6 @@
 from django.urls import path
 from djoser.views import UserViewSet
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView , TokenBlacklistView , TokenRefreshView
 
 
 app_name = 'accounts'
@@ -16,4 +16,6 @@ urlpatterns = [
     path("profile/", UserViewSet.as_view({"get": "me"}), name="profile"),
     path("edit-profile/", UserViewSet.as_view({"patch": "me"}), name="profile_edit"),
     path("delete-profile/", UserViewSet.as_view({"delete": "me"}), name="profile_delete"),
+    path("logout/",TokenBlacklistView.as_view(), name='logout'),
+    path("refresh/", TokenRefreshView.as_view(), name="refresh_token")
 ]
