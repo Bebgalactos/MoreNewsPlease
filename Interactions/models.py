@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 from django.contrib.auth import get_user_model
 from Articles.models import Article
@@ -38,6 +39,7 @@ class Interaction(models.Model):
         choices=OPINION_CHOICES, max_length=20, null=True, blank=True)
     share = models.CharField(choices=SHARE_CHOICES,
                              max_length=20, null=True, blank=True)
+    duration = models.PositiveSmallIntegerField(null = True , blank = True)
 
     class Meta:
         ordering = ['-timestamp']

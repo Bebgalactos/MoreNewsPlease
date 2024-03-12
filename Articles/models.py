@@ -2,7 +2,11 @@ from django.db import models
 import uuid
 # Create your models here.
 
+class Category(models.Model):
+    name = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.name
 class Newspaper(models.Model):
     newspaper_id = models.UUIDField(
         primary_key=True, unique=True, default=uuid.uuid4, editable=False)
@@ -11,7 +15,6 @@ class Newspaper(models.Model):
 
     def __str__(self) -> str:
         return self.name
-
 
 class Article(models.Model):
     article_id = models.UUIDField(
@@ -23,6 +26,7 @@ class Article(models.Model):
     author = models.TextField(blank=False)
     content = models.TextField(blank=False)
     newspaper = models.ForeignKey(Newspaper, on_delete=models.CASCADE)
+    categories = models.ManyToManyField(Category)
 
     def __str__(self) -> str:
         return str(self.title)

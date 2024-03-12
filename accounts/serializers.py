@@ -23,7 +23,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserCustomised
-        fields = ('user_name', 'email', 'first_name', 'last_name',
+        fields = ('id','user_name', 'email', 'first_name', 'last_name',
                   'phone_number', 'adress', "is_first_login")
         extra_kwargs = {
             'first_name': {'required': True},
@@ -51,7 +51,12 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserCustomised
         fields = ['id', 'user_name', 'first_name',
-                  'last_name', 'email', 'phone_number', 'adress', 'is_first_login']
+                  'last_name', 'email', 'phone_number', 'adress', 'is_first_login', 'is_active' , 'is_staff', 'algorithm']
+        
+    def delete(self, validated_data):
+        user = UserCustomised.objects.get(id=validated_data['id'])
+        user.delete()
+        return user
 
 
 class AccountActivationSerializer(ActivationSerializer):

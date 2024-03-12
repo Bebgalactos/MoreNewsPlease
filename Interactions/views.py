@@ -1,13 +1,13 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status , mixins
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated 
 from django.shortcuts import get_object_or_404
 from Articles.models import Article
 from .models import Interaction
 from .serializers import (
     ReadSerializer, OpinionSerializer, ShareInteractionSerializer,
-    RatingInteractionSerializer, FavoriteInteractionSerializer
+    RatingInteractionSerializer, FavoriteInteractionSerializer, HistorySerializer
 )
 
 
@@ -70,3 +70,11 @@ class InteractionsViewset(viewsets.GenericViewSet):
     @action(methods=['post'], detail=False, url_path="favorite")
     def favorite_article(self, request, article_pk):
         return self.perform_interaction(request, article_pk, 'favorite')
+
+
+class HistoryViewset(mixins.ListModelMixin, viewsets.GenericViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = HistorySerializer
+
+    def get_queryset(self):
+        return Interaction.objects.select_related('article').filter(user=self.request.user)

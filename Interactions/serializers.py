@@ -1,21 +1,33 @@
+from pyexpat import model
+from attr import fields
 from rest_framework import serializers
 from .models import Interaction, INTERACTION_TYPE_CHOICES
-from django.core.validators import MinValueValidator , MaxValueValidator
+from Articles.serializers import ArticleSerializer
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 class InteractionSerializer(serializers.ModelSerializer):
     user = serializers.CharField(read_only=True)
     article = serializers.UUIDField(read_only=True)
+
     class Meta:
         model = Interaction
-        fields = ('id', 'user', 'article', 'interaction_type', 'timestamp')
+        fields = ("id", "user", "article", "interaction_type", "timestamp")
 
 
 class ReadSerializer(InteractionSerializer):
-    interaction_type = serializers.HiddenField(default=INTERACTION_TYPE_CHOICES['READ'])
+    interaction_type = serializers.HiddenField(default=INTERACTION_TYPE_CHOICES["READ"])
+    duration = serializers.IntegerField(validators=[MinValueValidator(limit_value=1)])
+
+    class Meta:
+        model = Interaction
+        fields = InteractionSerializer.Meta.fields + ("duration",)
 
 
 class OpinionSerializer(InteractionSerializer):
-    interaction_type = serializers.HiddenField(default=INTERACTION_TYPE_CHOICES['OPINION'])
+    interaction_type = serializers.HiddenField(
+        default=INTERACTION_TYPE_CHOICES["OPINION"]
+    )
 
     class Meta(InteractionSerializer.Meta):
         model = Interaction
@@ -23,25 +35,41 @@ class OpinionSerializer(InteractionSerializer):
 
 
 class RatingInteractionSerializer(InteractionSerializer):
-    interaction_type = serializers.HiddenField(default=INTERACTION_TYPE_CHOICES['RATING'])
-    rating = serializers.IntegerField(validators = [MinValueValidator(limit_value=1),MaxValueValidator(limit_value=5)])
+    interaction_type = serializers.HiddenField(
+        default=INTERACTION_TYPE_CHOICES["RATING"]
+    )
+    rating = serializers.IntegerField(
+        validators=[MinValueValidator(limit_value=1), MaxValueValidator(limit_value=5)]
+    )
 
     class Meta(InteractionSerializer.Meta):
-        fields = InteractionSerializer.Meta.fields + ('rating',)
+        fields = InteractionSerializer.Meta.fields + ("rating",)
         model = Interaction
 
 
 class ShareInteractionSerializer(InteractionSerializer):
-    interaction_type = serializers.HiddenField(default=INTERACTION_TYPE_CHOICES['SHARE'])
+    interaction_type = serializers.HiddenField(
+        default=INTERACTION_TYPE_CHOICES["SHARE"]
+    )
 
     class Meta(InteractionSerializer.Meta):
-        fields = InteractionSerializer.Meta.fields + ('share',)
+        fields = InteractionSerializer.Meta.fields + ("share",)
         model = Interaction
 
 
 class FavoriteInteractionSerializer(InteractionSerializer):
-    interaction_type = serializers.HiddenField(default=INTERACTION_TYPE_CHOICES['FAVORITE'])
+    interaction_type = serializers.HiddenField(
+        default=INTERACTION_TYPE_CHOICES["FAVORITE"]
+    )
 
     class Meta(InteractionSerializer.Meta):
         fields = InteractionSerializer.Meta.fields
         model = Interaction
+
+
+class HistorySerializer(serializers.ModelSerializer):
+    article = ArticleSerializer(read_only=True)
+
+    class Meta:
+        model = Interaction
+        fields = "__all__"
