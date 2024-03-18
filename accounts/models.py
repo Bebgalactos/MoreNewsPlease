@@ -10,10 +10,7 @@ class UserCustomised(AbstractBaseUser, PermissionsMixin):
         ("alg1", "Algorithm 1"),
         ("alg2", "Algorithm 2"),
         ("alg3", "Algorithm 3"),
-        # Add more algorithms as needed
     ]
-
-    # Existing fields...
 
     algorithm = models.CharField(
         "Algorithm", max_length=50, choices=ALGORITHM_CHOICES, default="alg1"
@@ -23,11 +20,11 @@ class UserCustomised(AbstractBaseUser, PermissionsMixin):
         "Nom d'utilisateur", max_length=50, blank=False, unique=True
     )
     first_name = models.CharField("Prénom", max_length=50, blank=False)
-    last_name = models.CharField("Nom", max_length=50, blank=False)
+    last_name = models.CharField("Nom", max_length=50, blank=True, null = True)
     phone_number = models.CharField(
-        "Téléphone", max_length=50, unique=True, blank=False
+        "Téléphone", max_length=50, blank=True, null = True
     )
-    adress = models.CharField("Adresse", max_length=120, blank=False)
+    adress = models.CharField("Adresse", max_length=120, blank=True, null = True)
     is_active = models.BooleanField("Compte actif ? ", default=False)
     is_staff = models.BooleanField("Staff ? ", default=False)
     objects = UserManagerCustomised()

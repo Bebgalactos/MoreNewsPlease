@@ -15,21 +15,18 @@ class RegisterSerializer(serializers.ModelSerializer):
         required=True,
         validators=[UniqueValidator(queryset=UserCustomised.objects.all())]
     )
-    phone_number = serializers.CharField(required=True, validators=[RegexValidator(
+    phone_number = serializers.CharField(required=False, validators=[RegexValidator(
         regex="^(?:(?:(?:\+|00)33[ ]?(?:\(0\)[ ]?)?)|0){1}[1-9]{1}([ .-]?)(?:\d{2}\1?){3}\d{2}$",
-        message="Format Tel Invalide"),
-        UniqueValidator(queryset=UserCustomised.objects.all())])
-    is_first_login = serializers.BooleanField(read_only=True)
-
+        message="Format Tel Invalide" ),
+        UniqueValidator(queryset=UserCustomised.objects.all())], allow_blank=True)
     class Meta:
         model = UserCustomised
         fields = ('id','user_name', 'email', 'first_name', 'last_name',
-                  'phone_number', 'adress', "is_first_login")
+                  'phone_number', 'adress')
         extra_kwargs = {
             'first_name': {'required': True},
-            'last_name': {'required': True},
-            'phone_number': {'required': True},
-            'adress': {'required': True}}
+            'last_name': {'required': False},
+            'adress': {'required': False }}
 
     def create(self, validated_data):
         temporary_password = generate_random_password()

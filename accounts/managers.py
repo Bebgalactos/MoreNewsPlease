@@ -13,12 +13,12 @@ class UserManagerCustomised(BaseUserManager):
             raise ValueError("Nom d'utilisateur obligatoire")
         if not first_name:
             raise ValueError("Prénom obligatoire")
-        if not last_name:
-            raise ValueError("Nom obligatoire")
-        if not phone_number:
-            raise ValueError("Num Tel obligatoire")
-        if not adress:
-            raise ValueError("Adresse obligatoire")
+        # if not last_name:
+        #     raise ValueError("Nom obligatoire")
+        # if not phone_number:
+        #     raise ValueError("Num Tel obligatoire")
+        # if not adress:
+        #     raise ValueError("Adresse obligatoire")
         email = self.normalize_email(email)
         temporary_password = generate_random_password()
         user = self.model(email=email, user_name=user_name,
