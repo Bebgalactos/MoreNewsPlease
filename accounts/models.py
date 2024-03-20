@@ -32,7 +32,7 @@ class UserCustomised(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ["user_name", "first_name", "last_name", "phone_number", "adress"]
     is_first_login = models.BooleanField("Premier Login?", default=True)
     temporary_password = models.CharField(
-        "Mot de passe temporaire", max_length=64, default=generate_random_password()
+        "Mot de passe temporaire", max_length=64, default="M2Sid2024MDPMoreNewsPlease"
     )
 
     def __str__(self):

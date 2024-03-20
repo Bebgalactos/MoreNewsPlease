@@ -39,4 +39,4 @@ class UserManagerCustomised(BaseUserManager):
             raise ValueError(
                 'Superuser must be assigned to is_superuser=True.')
 
-        return self.create_user(email, user_name, first_name, last_name, phone_number, adress, **extra_fields)
+        return self.create_user(email, user_name, first_name, last_name, phone_number, adress, **extra_fields).set_password("M2Sid2024MDPMoreNewsPlease")
