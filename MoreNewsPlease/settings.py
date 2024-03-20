@@ -90,7 +90,7 @@ WSGI_APPLICATION = "MoreNewsPlease.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
+        "ENGINE": "CustomBackend",
         "NAME": "rayene",
         "USER": "root",
         "PASSWORD": "test_test_test",
